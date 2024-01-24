@@ -4,7 +4,6 @@ import socket
 # Create clinet socket
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-# 호스트 이름을 IP 주소로 변환합니다.
 server_IP = sys.argv[1]
 
 # Set server IP & port
