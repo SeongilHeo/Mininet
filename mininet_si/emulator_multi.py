@@ -36,12 +36,11 @@ def run_tcp_server(server):
 def stop_tcp_server(server):
     server.cmd('kill %python')
 
-def start_tcp_trasfer(server, client):
+def start_tcp_transfer(server, client):
     print(f"Starting TCP data transfer from {client.name} to {server.name}")
-    triggered.clear()
     while True:
-        if not triggered.is_set():
-           dst.cmd(f'python client.py {server.IP()}')
+        if triggered.is_set():
+           client.cmd(f'python client.py {server.IP()}')
 
 def freeze_tcp_transfer(process):
     triggered.set()
@@ -79,7 +78,7 @@ def main():
         run_tcp_server(ingress_sat)
 
         # data transfer # multiprocessing
-        t=Thread(target=start_tcp_tranfer,args=(ingress_sat, g0))
+        t=Thread(target=start_tcp_transfer,args=(ingress_sat, g0))
         t.start()
 
         print("Simulating handover...")
@@ -95,7 +94,7 @@ def main():
 
             # Resume data transfer
             print("Resuming data transfer after handover...")
-            t=Thread(target=start_tcp_tranfer,args=(ingress_sat, g0))
+            t=Thread(target=start_tcp_transfer,args=(ingress_sat, g0))
             t.start()
 
             time.sleep(handover_interval)
